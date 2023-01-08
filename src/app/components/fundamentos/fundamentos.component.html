@@ -1,0 +1,181 @@
+
+<h1>String Interpolation</h1>
+
+<h1> Hola Mundo </h1>
+<h2>{{ 'Hola Mundo'.repeat(5) }}</h2>
+<p>3 + 3 = {{ 3 + 3 }}</p>
+<h3>Hola, soy {{ name }} y tengo {{ age }}</h3>
+<img src="{{ img }}" alt="image">
+<img src={{img}} alt="image">
+
+<hr>
+
+<h1>Property binding</h1>
+
+<button disabled="false">Enviar</button>
+<input type="text" value="Francisco">
+<progress max="100" value="10"></progress>
+
+<button [disabled]="btnDisabled">Enviar</button>
+<input type="text" [value]="name">
+<progress max="100" [value]="age"></progress>
+<img width="100" [src]="img" alt="">
+
+<input type="text" [value]="person.name">
+<progress max="100" [value]="person.age"></progress>
+<img width="100" [src]="person.avatar" alt="">
+
+<hr>
+<h1>Eventos</h1>
+
+<button [disabled]="btnDisabled">Enviar</button>
+<button (click)="toggleButton()">Toggle Button</button>
+
+<p>Edad {{ age }}</p>
+<button (click)="clickAge()">Age++</button>
+
+<input type="text" [value]="person.name" (keyup)="changeName($event)">
+<p>Nombre {{person.name}}</p>
+<div class="box" (scroll)="onScroll($event)">
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum voluptas, odit sed perferendis, eos voluptatem accusantium omnis corrupti eveniet ea iure, exercitationem sunt atque quibusdam excepturi numquam enim dignissimos id.Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum voluptas, odit sed perferendis, eos voluptatem accusantium omnis corrupti eveniet ea iure, exercitationem sunt atque quibusdam excepturi numquam enim dignissimos id.</p>
+</div>
+
+
+<hr>
+<h1>Ng Model</h1>
+
+<input type="text" required #nameInput="ngModel" [(ngModel)]="person.name">
+<p>Nombre {{person.name}}</p>
+<p>Valid: {{ nameInput.valid }}</p>
+<input type="number" required max="18" min="10" #ageInput="ngModel" [(ngModel)]="person.age">
+<p>Age {{ageInput.valid}}</p>
+
+
+<hr>
+<h1>*ngIf</h1>
+
+<input type="text" required [(ngModel)]="person.name">
+<p *ngIf="person.name == 'jherson'">Soy Jherson</p>
+<p *ngIf="person.name == 'julian' && person.age === 18; else elseBlock">Soy Julian</p>
+
+<ng-template #elseBlock>
+  <p>Bloque de else</p>
+</ng-template>
+
+
+<hr>
+<h1>*ngFor</h1>
+
+<input type="text" required [(ngModel)]="newName">
+<button (click)="addname()">Add name</button>
+<ul>
+  <li *ngIf="names.length === 0">No hay nombres</li>
+  <li *ngFor="let name of names; index as i">
+    {{i}} {{name}}
+    <button (click)="deleteName(i)">Delete</button>
+  </li>
+</ul>
+
+
+<hr>
+<h1>*ngFor Objs</h1>
+
+<div class="products--grid">
+  <div *ngFor="let product of products">
+    <img width="300" [src]="product.image" alt="image">
+    <h2>{{product.price}}</h2>
+    <p>{{product.name}}</p>
+  </div>
+</div>
+
+
+<hr>
+<h1>*ngSwitch</h1>
+
+<input type="text" required [(ngModel)]="person.name">
+<div [ngSwitch]="person.name">
+  <p *ngSwitchCase="'nicolas'">
+    La persona es Nicolas
+  </p>
+  <p *ngSwitchCase="'julian'">
+    La persona es Julian
+  </p>
+  <p *ngSwitchCase="'camilo'">
+    La persona es Camilo
+  </p>
+  <p *ngSwitchDefault>
+    No hace match
+  </p>
+</div>
+
+<hr>
+<h1>Class and Styles</h1>
+
+<input type="text" required #nameInputTres="ngModel" [(ngModel)]="person.name">
+<p class="message-error">El campo es requerido</p>
+<p class="message-error" [class.active]="nameInputTres.invalid">El campo es requerido</p>
+
+<label for="">Nombre</label>
+<input type="text" required #nameInputCuatro="ngModel" [(ngModel)]="person.name">
+<p [style.font-style]="nameInputCuatro.invalid ? 'italic' : 'normal'">texto texto</p>
+
+<div class="styles">
+  <div>
+    <input type="text" [(ngModel)]="widthImage">
+  </div>
+  <div>
+    <img [style.width.px]="widthImage" src="person.avatar" alt="">
+  </div>
+</div>
+
+
+<hr>
+<h1>NgClass & NgStyle</h1>
+
+<input type="text" required #nameInputCinco="ngModel" [(ngModel)]="person.name">
+<hr class="line-error"
+  [ngClass]="{
+    'valid': nameInputCinco.valid,
+    'invalid': nameInputCinco.invalid
+  }"
+/>
+<p class="message-error" [class.invalid]="nameInputCinco.invalid">El campo es requerido</p>
+<div class="styles">
+  <div>
+    <input type="number" [(ngModel)]="box.width">
+    <input type="number" [(ngModel)]="box.height">
+    <input type="color" [(ngModel)]="box.background">
+  </div>
+  <div>
+    <div [ngStyle]="{
+      'width.px': box.width,
+      'height.px': box.height,
+      'background-color': box.background,
+      'display': 'block'
+    }"></div>
+  </div>
+</div>
+
+
+<hr>
+<h1>Formulario</h1>
+
+<form (ngSubmit)="onRegister()" action="" #myForm="ngForm">
+  <div class="input-group">
+    <label for="name">Nombre</label>
+    <input type="text" required [(ngModel)]="register.name" name="name">
+    <p>Mensajes de error</p>
+  </div>
+  <div class="input-group">
+    <label for="email">Email</label>
+    <input type="email" required [(ngModel)]="register.email" name="email">
+    <p>Mensajes de error</p>
+  </div>
+  <div class="input-group">
+    <label for="password">Nombre</label>
+    <input type="password" required [(ngModel)]="register.password" name="password">
+    <p>Mensajes de error</p>
+  </div>
+  <button [disabled]="myForm.invalid" type="submit">Registrar</button>
+  <button type="button">Acción</button>
+</form>
