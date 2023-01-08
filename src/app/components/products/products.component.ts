@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/models/product.model';
+import { ProductsService } from 'src/app/services/products.service';
+import { StoreService } from 'src/app/services/store.service';
 
 @Component({
   selector: 'app-products',
@@ -9,42 +11,23 @@ import { Product } from 'src/app/models/product.model';
 export class ProductsComponent implements OnInit {
   myShoppingCart: Product[] = [];
   total = 0;
-  products: Product[] = [
-    {
-      id: '1',
-      name: 'EL mejor juguete',
-      price: 565,
-      image: './assets/images/toy.jpg'
-    },
-    {
-      id: '2',
-      name: 'Bicicleta casi nueva',
-      price: 356,
-      image: './assets/images/bike.jpg'
-    },
-    {
-      id: '3',
-      name: 'Colleción de albumnes',
-      price: 34,
-      image: './assets/images/album.jpg'
-    },
-    {
-      id: '4',
-      name: 'Mis libros',
-      price: 23,
-      image: './assets/images/books.jpg'
-    }
-  ];
-  constructor() { }
+  products: Product[] = [];
+
+  constructor(private storeService: StoreService, private productsService: ProductsService) {
+    this.myShoppingCart = this.storeService.getShoppingCart();
+  }
 
   ngOnInit(): void {
+    this.productsService.getAllProducts()
+      .subscribe(data => {
+        console.log(data);
+        this.products = data;
+      });
   }
 
   onAddToShoppingCart(product: Product) {
     console.log(product);
-    this.myShoppingCart.push(product);
-    this.total = this.myShoppingCart.reduce((sum, item) => {
-      return sum + item.price
-    }, 0);
+    this.storeService.addProduct(product);
+    this.total = this.storeService.getTotal();
   }
 }
