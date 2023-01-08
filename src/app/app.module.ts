@@ -10,6 +10,8 @@ import { FundamentosComponent } from './components/fundamentos/fundamentos.compo
 import { ProductComponent } from './components/product/product.component';
 import { ProductsComponent } from './components/products/products.component';
 import { NavComponent } from './components/nav/nav.component';
+import { ReversePipe } from './pipes/reverse.pipe';
+import { TimeAgoPipe } from './pipes/time-ago.pipe';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { NavComponent } from './components/nav/nav.component';
     FundamentosComponent,
     ProductComponent,
     ProductsComponent,
-    NavComponent
+    NavComponent,
+    ReversePipe,
+    TimeAgoPipe
   ],
   imports: [
     BrowserModule,
