@@ -9,13 +9,19 @@ import { Product } from 'src/app/models/product.model';
 export class ProductComponent {
 
   @Input() product: Product = <Product>{};
-  // @Input() product: Product = {
+  // @Input() productDos: Product = {
   //   id: '',
   //   price: 0,
-  //   image: '',
-  //   name: ''
+  //   images: [],
+  //   title: '',
+  //   category: {
+  //     id: '',
+  //     name: ''
+  //   },
+  //   description: ''
   // };
   @Output() addedProduct = new EventEmitter<Product>();
+  @Output() showDetailProduct = new EventEmitter<string>();
 
   constructor() { }
 
@@ -23,4 +29,7 @@ export class ProductComponent {
     this.addedProduct.emit(this.product);
   }
 
+  onShowDetail() {
+    this.showDetailProduct.emit(this.product.id);
+  }
 }
