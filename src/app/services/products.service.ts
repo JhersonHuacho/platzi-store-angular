@@ -3,13 +3,15 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { retry, retryWhen } from 'rxjs/operators';
 import { CreateProductDTO, Product, UpdateProductDTO } from '../models/product.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
 
-  private readonly apiUrl = 'https://young-sands-07814.herokuapp.com/api/products';
+  // private readonly apiUrl = 'https://young-sands-07814.herokuapp.com/api/products';
+  private readonly apiUrl = `${environment.API_URL}/api/products`;
 
   constructor(private httpClient: HttpClient) { }
 
