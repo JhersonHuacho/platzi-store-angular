@@ -8,18 +8,18 @@ import { Product } from 'src/app/models/product.model';
 })
 export class ProductComponent {
 
-  @Input() product: Product = <Product>{};
-  // @Input() productDos: Product = {
-  //   id: '',
-  //   price: 0,
-  //   images: [],
-  //   title: '',
-  //   category: {
-  //     id: '',
-  //     name: ''
-  //   },
-  //   description: ''
-  // };
+  //@Input() product: Product = <Product>{};
+  @Input() product: Product = {
+    id: '',
+    price: 0,
+    images: [],
+    title: '',
+    category: {
+      id: '',
+      name: ''
+    },
+    description: ''
+  };
   @Output() addedProduct = new EventEmitter<Product>();
   @Output() showDetailProduct = new EventEmitter<string>();
 

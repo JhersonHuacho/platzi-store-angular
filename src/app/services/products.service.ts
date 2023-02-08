@@ -1,7 +1,8 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { retry, retryWhen } from 'rxjs/operators';
+import { Observable, zip } from 'rxjs';
+import { retry, retryWhen, catchError, map } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 import { CreateProductDTO, Product, UpdateProductDTO } from '../models/product.model';
 import { environment } from '../../environments/environment';
 
@@ -24,7 +25,13 @@ export class ProductsService {
     }
     return this.httpClient.get<Product[]>(this.apiUrl, { params })
       .pipe(
-        retry(3)
+        retry(3),
+        map(products => products.map(item => {
+          return {
+            ...item,
+            taxes: .19 * item.price
+          }
+        }))
       );
   }
 
@@ -35,7 +42,21 @@ export class ProductsService {
   }
 
   getProduct(id: string): Observable<Product> {
-    return this.httpClient.get<Product>(`${this.apiUrl}/${id}`);
+    return this.httpClient.get<Product>(`${this.apiUrl}/${id}`)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === HttpStatusCode.Conflict) {
+            return throwError('Algo esta fallando en el server');
+          }
+          if (error.status === HttpStatusCode.NotFound) {
+            return throwError('El producto no existe');
+          }
+          if (error.status === HttpStatusCode.Unauthorized) {
+            return throwError('No estas autorizado');
+          }
+          return throwError('Ups algo salio mal');
+        })
+      );
   }
 
   create(dataDto: CreateProductDTO) {
@@ -48,5 +69,12 @@ export class ProductsService {
 
   delete(id: string) {
     return this.httpClient.delete<boolean>(`${this.apiUrl}/${id}`);
+  }
+
+  fetchReadAndUpdate(id: string, dataDto: UpdateProductDTO) {
+    return zip(
+      this.getProduct(id),
+      this.update(id, dataDto)
+    );
   }
 }

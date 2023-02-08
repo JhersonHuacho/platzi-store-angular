@@ -10,6 +10,7 @@ export interface Product {
   images: string[];
   description: string;
   category: Category;
+  taxes?: number;
 }
 
 // CON extends Omit<Product, 'id' | 'category' >
