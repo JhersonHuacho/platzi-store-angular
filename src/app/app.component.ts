@@ -12,6 +12,7 @@ export class AppComponent {
 
   imgParent = 'https://source.unsplash.com/random';
   showImg = true;
+  token = '';
 
   constructor(private authService: AuthService, private usersService: UsersService){}
 
@@ -36,6 +37,13 @@ export class AppComponent {
   login() {
     this.authService.login('seba@email.com', '123456').subscribe(response => {
       console.log(response.access_token);
+      this.token = response.access_token;
+    });
+  }
+
+  getProfile() {
+    this.authService.profile(this.token).subscribe(profile => {
+      console.log(profile);
     });
   }
 }
