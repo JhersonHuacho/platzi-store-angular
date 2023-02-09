@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { elementAt } from 'rxjs/operators';
 import { Product } from './models/product.model';
 import { AuthService } from './services/auth.service';
+import { FilesService } from './services/files.service';
 import { UsersService } from './services/users.service';
 
 @Component({
@@ -12,9 +14,9 @@ export class AppComponent {
 
   imgParent = 'https://source.unsplash.com/random';
   showImg = true;
+  imgRta = '';
 
-
-  constructor(private usersService: UsersService){}
+  constructor(private usersService: UsersService, private filesService: FilesService){}
 
   onLoaded(img: string) {
     console.log('log padre => ', img);
@@ -34,5 +36,20 @@ export class AppComponent {
     });
   }
 
+  downloadPdf() {
+    //this.filesService.getFile('my.pdf', './assets/files/texto.txt')
+    // this.filesService.getFile('my.pdf', 'https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf', 'application/pdf')
+    this.filesService.getFile('my.pdf', 'https://young-sands-07814.herokuapp.com/api/files/dummy.pdf', 'application/pdf')
+      .subscribe();
+  }
 
+  onUpload(event: Event) {
+    const element = event.target as HTMLInputElement;
+    const file = element.files?.item(0);
+    if (file) {
+      this.filesService.uploadFile(file).subscribe(rta => {
+        this.imgRta = rta.location;
+      });
+    }
+  }
 }
