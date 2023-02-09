@@ -11,7 +11,6 @@ import { StoreService } from 'src/app/services/store.service';
 export class NavComponent implements OnInit {
   activeMenu = false;
   counter = 0;
-  token = '';
   profile: User | null = null;
 
   constructor(private storeService : StoreService, private authService: AuthService) { }
@@ -27,18 +26,8 @@ export class NavComponent implements OnInit {
   }
 
   login() {
-    this.authService.login('seba@email.com', '123456').subscribe(response => {
-      console.log(response.access_token);
-      this.token = response.access_token;
-      this.getProfile();
-    });
-  }
-
-  getProfile() {
-    this.authService.profile(this.token).subscribe(user => {
-      console.log(user);
+    this.authService.loginAndGet('seba@email.com', '123456').subscribe(user => {
       this.profile = user;
     });
   }
-
 }
