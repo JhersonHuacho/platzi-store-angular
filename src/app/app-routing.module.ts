@@ -56,6 +56,10 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'cms',
+    loadChildren: () => import('./cms/cms.module').then(module => module.CmsModule)
+  },
+  {
     path: '**',
     component: NotFoundComponent
   }
