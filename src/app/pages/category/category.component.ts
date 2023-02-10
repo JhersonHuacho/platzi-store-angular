@@ -10,6 +10,7 @@ import { ProductsService } from 'src/app/services/products.service';
   styleUrls: ['./category.component.scss']
 })
 export class CategoryComponent implements OnInit {
+  productId: string | null = null;
   products: Product[] = [];
   categoryId: string | null = null;
   limit = 10;
@@ -46,5 +47,9 @@ export class CategoryComponent implements OnInit {
         console.log("data",data);
         this.products = data;
       });
+
+    this.activatedRoute.queryParamMap.subscribe(params => {
+      this.productId = params.get('product');
+    });
   };
 }
