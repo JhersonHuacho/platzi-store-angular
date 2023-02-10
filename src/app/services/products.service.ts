@@ -13,9 +13,19 @@ import { environment } from '../../environments/environment';
 export class ProductsService {
 
   // private readonly apiUrl = 'https://young-sands-07814.herokuapp.com/api/products';
-  private readonly apiUrl = `${environment.API_URL}/api/products`;
+  private readonly apiUrl = `${environment.API_URL}/api`;
 
   constructor(private httpClient: HttpClient) { }
+
+  getByCategory(categoryId: string, limit?: number, offset?: number) {
+    let params = new HttpParams();
+    if (limit !== undefined && offset !== undefined) {
+      params = params.set('limit', limit);
+      params = params.set('offset', limit);
+    }
+
+    return this.httpClient.get<Product[]>(`${this.apiUrl}/categories/${categoryId}/products`, { params });
+  }
 
   getAllProducts(limit?: number, offset?: number): Observable<Product[]> {
     //return this.httpClient.get<Product[]>('https://fakestoreapi.com/products');
@@ -24,7 +34,7 @@ export class ProductsService {
       params = params.set('limit', limit);
       params = params.set('offset', limit);
     }
-    return this.httpClient.get<Product[]>(this.apiUrl, { params, context: checkTime() })
+    return this.httpClient.get<Product[]>(`${this.apiUrl}/products`, { params, context: checkTime() })
       .pipe(
         retry(3),
         map(products => products.map(item => {
@@ -37,13 +47,13 @@ export class ProductsService {
   }
 
   getProductsByPage(limit: number, offset: number) {
-    return this.httpClient.get<Product[]>(`${this.apiUrl}`, {
+    return this.httpClient.get<Product[]>(`${this.apiUrl}/products`, {
       params: {limit, offset}
     });
   }
 
   getProduct(id: string): Observable<Product> {
-    return this.httpClient.get<Product>(`${this.apiUrl}/${id}`)
+    return this.httpClient.get<Product>(`${this.apiUrl}/products/${id}`)
       .pipe(
         catchError((error: HttpErrorResponse) => {
           if (error.status === HttpStatusCode.Conflict) {
@@ -61,15 +71,15 @@ export class ProductsService {
   }
 
   create(dataDto: CreateProductDTO) {
-    return this.httpClient.post<Product>(this.apiUrl, dataDto);
+    return this.httpClient.post<Product>(`${this.apiUrl}/products`, dataDto);
   }
 
   update(id: string, dataDto: UpdateProductDTO) {
-    return this.httpClient.put<Product>(`${this.apiUrl}/${id}`, dataDto);
+    return this.httpClient.put<Product>(`${`${this.apiUrl}/products`}/${id}`, dataDto);
   }
 
   delete(id: string) {
-    return this.httpClient.delete<boolean>(`${this.apiUrl}/${id}`);
+    return this.httpClient.delete<boolean>(`${`${this.apiUrl}/products`}/${id}`);
   }
 
   fetchReadAndUpdate(id: string, dataDto: UpdateProductDTO) {

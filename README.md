@@ -30,3 +30,5 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 https://young-sands-07814.herokuapp.com/docs/
 https://young-sands-07814.herokuapp.com/api/products
+https://damp-spire-59848.herokuapp.com/
+https://damp-spire-59848.herokuapp.com/docs/
