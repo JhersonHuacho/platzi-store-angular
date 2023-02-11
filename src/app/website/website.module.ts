@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { CategoryComponent } from './pages/category/category.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { MycartComponent } from './pages/mycart/mycart.component';
@@ -23,7 +22,6 @@ import { SharedModule } from '../shared/shared.module';
     FundamentosComponent,
     NavComponent,
     HomeComponent,
-    CategoryComponent,
     ProductDetailComponent,
     ProfileComponent,
     MycartComponent,
